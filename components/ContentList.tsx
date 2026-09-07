@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { LoaderCircle, Plus, Trash2 } from "lucide-react";
+import { ContentThumbnail } from "@/components/ContentThumbnail";
 import { LiveIndicator, PlatformBadge } from "@/components/PlatformBadge";
 import { Sparkline } from "@/components/Sparkline";
 import { TrendIndicator } from "@/components/TrendIndicator";
@@ -137,19 +138,10 @@ export function ContentList({
                 className="min-w-0 flex-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber"
               >
                 <div className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3 sm:grid-cols-[auto_minmax(0,1.4fr)_112px_auto] sm:gap-4">
-                  {item.thumbnailUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={item.thumbnailUrl}
-                      alt=""
-                      referrerPolicy="no-referrer"
-                      className="h-12 w-10 rounded object-cover bg-bg"
-                    />
-                  ) : (
-                    <div className="flex h-12 w-10 items-center justify-center rounded bg-bg text-[10px] text-muted">
-                      —
-                    </div>
-                  )}
+                  <ContentThumbnail
+                    src={item.thumbnailUrl}
+                    className="h-12 w-10 rounded object-cover bg-bg"
+                  />
 
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-x-3 gap-y-1">

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ExternalLink } from "lucide-react";
+import { ContentThumbnail } from "@/components/ContentThumbnail";
 import { DeleteContentButton } from "@/components/DeleteContentButton";
 import { EngagementChart } from "@/components/EngagementChart";
 import { MetricStat } from "@/components/MetricStat";
@@ -63,19 +64,11 @@ export default async function ContentDetailPage({ params }: PageProps) {
 
       <section className="rounded-lg border border-border bg-surface p-4 sm:p-5">
         <div className="flex flex-col gap-4 sm:flex-row">
-          {content.thumbnailUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={content.thumbnailUrl}
-              alt={content.title || "Thumbnail"}
-              referrerPolicy="no-referrer"
-              className="h-44 w-32 rounded-md object-cover bg-bg"
-            />
-          ) : (
-            <div className="flex h-44 w-32 items-center justify-center rounded-md bg-bg text-xs text-muted">
-              —
-            </div>
-          )}
+          <ContentThumbnail
+            src={content.thumbnailUrl}
+            alt={content.title || "Thumbnail"}
+            className="h-44 w-32 rounded-md object-cover bg-bg"
+          />
 
           <div className="min-w-0 flex-1 space-y-2">
             <div className="flex flex-wrap items-center gap-3">
