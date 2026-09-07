@@ -48,6 +48,16 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
+## Vercel
+
+Set these Environment Variables in the Vercel project (Production + Preview):
+
+- `DATABASE_URL` — gunakan **Session pooler** URI dari Supabase (port `5432`)
+- `SCRAPECREATORS_API_KEY`
+- `CRON_SECRET`
+
+Build sudah menjalankan `prisma generate` via `postinstall` dan script `build`.
+
 ## API
 
 - `POST /api/scrape` — `{ "url": "..." }` → scrape via ScrapeCreators, upsert `Content`, create `Snapshot`
