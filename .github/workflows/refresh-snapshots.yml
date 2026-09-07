@@ -1,0 +1,49 @@
+name: Refresh Snapshots
+
+on:
+  schedule:
+    # Every 6 hours
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Call refresh-snapshots cron endpoint
+        env:
+          APP_URL: ${{ secrets.APP_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${APP_URL:-}" ]; then
+            echo "Missing GitHub secret APP_URL (e.g. https://your-app.vercel.app)"
+            exit 1
+          fi
+
+          if [ -z "${CRON_SECRET:-}" ]; then
+            echo "Missing GitHub secret CRON_SECRET"
+            exit 1
+          fi
+
+          BASE_URL="${APP_URL%/}"
+          ENDPOINT="${BASE_URL}/api/cron/refresh-snapshots"
+
+          echo "Calling ${ENDPOINT}"
+          RESPONSE_FILE="$(mktemp)"
+          HTTP_CODE="$(curl -sS -o "${RESPONSE_FILE}" -w "%{http_code}" \
+            -X GET \
+            -H "Authorization: Bearer ${CRON_SECRET}" \
+            -H "Accept: application/json" \
+            "${ENDPOINT}")"
+
+          echo "HTTP ${HTTP_CODE}"
+          cat "${RESPONSE_FILE}"
+          echo
+
+          if [ "${HTTP_CODE}" -lt 200 ] || [ "${HTTP_CODE}" -ge 300 ]; then
+            echo "Cron refresh failed with HTTP ${HTTP_CODE}"
+            exit 1
+          fi

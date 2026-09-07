@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #0d1117;
+  --surface: #151b23;
+  --border: #232b36;
+  --text: #e6eaf0;
+  --text-secondary: #7c8798;
+  --accent-amber: #f5a623;
+  --accent-teal: #2dd4bf;
+  --platform-tiktok: #ff3b5c;
+  --platform-instagram: #c13584;
+  --platform-youtube: #ff3b30;
+  --danger: #f87171;
+  --focus-ring: #f5a623;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-bg text-text antialiased;
+    font-family: var(--font-public-sans), system-ui, sans-serif;
+  }
+
+  *:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--accent-amber) 35%, transparent);
+    color: var(--text);
+  }
+}
+
+@layer utilities {
+  .font-mono-metric {
+    font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@keyframes live-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.35);
+    opacity: 0.55;
+  }
+}
+
+.live-dot {
+  position: relative;
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background: var(--accent-amber);
+}
+
+.live-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--accent-amber);
+  animation: live-pulse 1.6s ease-in-out infinite;
+}
