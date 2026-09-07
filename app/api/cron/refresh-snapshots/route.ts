@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { scrapeContent, ScraperError } from "@/lib/scraper";
+import { resolveThumbnailCache } from "@/lib/thumbnail-cache";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 300;
@@ -59,13 +60,24 @@ export async function GET(request: NextRequest) {
     try {
       const scraped = await scrapeContent(content.url);
       const postedAt = scraped.posted_at ? new Date(scraped.posted_at) : null;
+      const thumb = await resolveThumbnailCache({
+        thumbnailUrl: scraped.thumbnail_url,
+        pageUrl: content.url,
+        platform: scraped.platform,
+      });
 
       const updated = await prisma.content.update({
         where: { id: content.id },
         data: {
           platform: scraped.platform,
           title: scraped.title,
-          thumbnailUrl: scraped.thumbnail_url,
+          thumbnailUrl: thumb?.sourceUrl ?? scraped.thumbnail_url,
+          ...(thumb
+            ? {
+                thumbnailData: thumb.data,
+                thumbnailMime: thumb.mime,
+              }
+            : {}),
           author: scraped.author,
           likes: scraped.likes,
           comments: scraped.comments,

@@ -139,6 +139,7 @@ export function ContentList({
               >
                 <div className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3 sm:grid-cols-[auto_minmax(0,1.4fr)_112px_auto] sm:gap-4">
                   <ContentThumbnail
+                    contentId={item.id}
                     src={item.thumbnailUrl}
                     className="h-12 w-10 rounded object-cover bg-bg"
                   />

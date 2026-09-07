@@ -4,17 +4,22 @@ import { useState } from "react";
 import { proxiedMediaUrl } from "@/lib/media";
 
 type Props = {
-  src: string | null | undefined;
+  /** Prefer stable same-origin cache when available */
+  contentId?: string;
+  src?: string | null;
   alt?: string;
   className?: string;
 };
 
 export function ContentThumbnail({
+  contentId,
   src,
   alt = "",
   className = "h-12 w-10 rounded object-cover bg-bg",
 }: Props) {
-  const proxied = proxiedMediaUrl(src);
+  const proxied = contentId
+    ? `/api/media/content/${contentId}`
+    : proxiedMediaUrl(src);
   const [failed, setFailed] = useState(false);
 
   if (!proxied || failed) {
