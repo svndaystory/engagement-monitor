@@ -2,8 +2,8 @@ name: Refresh Snapshots
 
 on:
   schedule:
-    # Every 6 hours
-    - cron: "0 */6 * * *"
+    # Once per day at 00:00 UTC (07:00 WIB)
+    - cron: "0 0 * * *"
   workflow_dispatch:
 
 jobs:

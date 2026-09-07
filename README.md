@@ -81,7 +81,7 @@ curl -H "Authorization: Bearer $CRON_SECRET" \
 
 ### GitHub Actions
 
-Workflow `.github/workflows/refresh-snapshots.yml` jalan tiap 6 jam + `workflow_dispatch`.
+Workflow `.github/workflows/refresh-snapshots.yml` jalan tiap 24 jam (00:00 UTC) + `workflow_dispatch`.
 Set repo secrets:
 
 - `APP_URL` — production base URL (tanpa trailing slash)
