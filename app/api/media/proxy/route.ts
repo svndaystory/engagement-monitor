@@ -28,6 +28,13 @@ export async function GET(request: NextRequest) {
   }
 
   try {
+    const host = target.hostname.toLowerCase();
+    const referer = host.includes("tiktok")
+      ? "https://www.tiktok.com/"
+      : host.includes("instagram") || host.includes("fbcdn") || host.includes("cdninstagram")
+        ? "https://www.instagram.com/"
+        : undefined;
+
     const upstream = await fetch(target.toString(), {
       method: "GET",
       redirect: "follow",
@@ -37,8 +44,10 @@ export async function GET(request: NextRequest) {
           "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
         Accept: "image/avif,image/webp,image/apng,image/*,*/*;q=0.8",
         "Accept-Language": "en-US,en;q=0.9",
+        ...(referer ? { Referer: referer, Origin: new URL(referer).origin } : {}),
       },
-      next: { revalidate: 60 * 60 * 6 },
+      // Cache at the edge after a successful fetch; do not cache failures via fetch cache
+      cache: "no-store",
     });
 
     if (!upstream.ok) {

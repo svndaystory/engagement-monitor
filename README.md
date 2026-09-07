@@ -52,9 +52,14 @@ Open [http://localhost:3000](http://localhost:3000).
 
 Set these Environment Variables in the Vercel project (Production + Preview):
 
-- `DATABASE_URL` — gunakan **Session pooler** URI dari Supabase (port `5432`)
+- `DATABASE_URL` — **Session pooler** URI (port `5432`) + `?sslmode=require`
 - `SCRAPECREATORS_API_KEY`
 - `CRON_SECRET`
+
+`vercel.json` pins Functions ke region **`syd1`** (dekat Supabase `ap-southeast-2`).
+Kalau DB pindah region, sesuaikan `regions` agar tidak timeout.
+
+Cek kesehatan DB di production: `GET /api/health`
 
 Build sudah menjalankan `prisma generate` via `postinstall` dan script `build`.
 

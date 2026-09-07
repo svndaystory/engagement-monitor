@@ -41,7 +41,8 @@ export default async function ContentIndexPage({ searchParams }: PageProps) {
           role="alert"
           className="rounded-lg border border-amber/30 bg-amber/10 px-4 py-3 text-sm text-amber"
         >
-          Gagal memuat data.
+          Gagal memuat data. Coba refresh — biasanya koneksi database sementara
+          putus.
         </p>
       ) : (
         <section className="space-y-3">
